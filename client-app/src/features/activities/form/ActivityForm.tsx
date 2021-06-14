@@ -6,12 +6,14 @@ interface ActivityFormProps {
   closeForm: () => void;
   activity: Activity | undefined;
   createOrEdit: (activity: Activity) => void;
+  submitting: boolean;
 }
 
 const ActivityForm: React.FC<ActivityFormProps> = ({
   closeForm,
   activity: selectedActivity,
   createOrEdit,
+  submitting,
 }) => {
   const initialState = selectedActivity ?? {
     id: "",
@@ -58,6 +60,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           onChange={handleInputChange}
         />
         <Form.Input
+          type="date"
           placeholder="Date"
           value={activity.date}
           name="date"
@@ -75,7 +78,13 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           name="venue"
           onChange={handleInputChange}
         />
-        <Button float="right" positive type="submit" content="Submit" />
+        <Button
+          loading={submitting}
+          float="right"
+          positive
+          type="submit"
+          content="Submit"
+        />
         <Button
           onClick={() => closeForm()}
           float="right"
