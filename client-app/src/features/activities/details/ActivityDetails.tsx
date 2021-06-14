@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Icon, Image } from "semantic-ui-react";
+import { Button, Card, Image } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 
 interface ActivityDetailsProps {
@@ -11,7 +11,7 @@ interface ActivityDetailsProps {
 const ActivityDetails: React.FC<ActivityDetailsProps> = ({
   activity,
   cancelSelectActivity,
-
+  openForm,
 }) => {
   return (
     <Card fluid>
@@ -25,7 +25,12 @@ const ActivityDetails: React.FC<ActivityDetailsProps> = ({
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths="2">
-          <Button basic color="blue" content="Edit" />
+          <Button
+            onClick={() => openForm(activity.id)}
+            basic
+            color="blue"
+            content="Edit"
+          />
           <Button
             onClick={() => cancelSelectActivity()}
             basic
