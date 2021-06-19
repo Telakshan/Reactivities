@@ -1,17 +1,16 @@
 import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
+import { useStore } from "../../../app/stores/store";
 
 interface ActivityListProps {
   activities: Activity[];
-  selectActivity: (id: string) => void;
   deleteActivity: (id: string) => void;
   submitting: boolean;
 }
 
 const ActivityList: React.FC<ActivityListProps> = ({
   activities,
-  selectActivity,
   deleteActivity,
   submitting,
 }) => {
@@ -24,6 +23,8 @@ const ActivityList: React.FC<ActivityListProps> = ({
     setTarget(e.currentTarget.name);
     deleteActivity(id);
   };
+
+  const { activityStore } = useStore();
 
   return (
     <Segment>
@@ -47,7 +48,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                   color="red"
                 />
                 <Button
-                  onClick={() => selectActivity(activity.id)}
+                  onClick={() => activityStore.selectActivity(activity.id)}
                   floated="right"
                   content="View"
                   color="blue"
