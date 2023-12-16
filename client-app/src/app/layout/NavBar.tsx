@@ -4,7 +4,9 @@ import { useStore } from "../stores/store";
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = () => {
+
   const { activityStore } = useStore();
+  
   return (
     <Menu inverted fixed="top">
       <Container>
