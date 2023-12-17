@@ -6,4 +6,4 @@ const ActivityDetailedInfo: React.FC  = () => {
   )
 }
 
-export default ActivityDetailedInfo
+export default ActivityDetailedInfo 

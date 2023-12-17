@@ -1,19 +1,27 @@
-import React, { ChangeEvent, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { Button, Form, Segment } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Activity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
-import { observer } from "mobx-react-lite";
-import { create } from "domain";
-
-interface ActivityFormProps {
-  createOrEdit: (activity: Activity) => void;
-  submitting: boolean;
-}
+import { v4 as uuid } from "uuid";
+import { Link } from "react-router-dom";
 
 const ActivityForm: React.FC = () => {
   const { activityStore } = useStore();
-  const { selectedActivity, closeForm, createActivity, updateActivity, loading } = activityStore;
-  const initialState = selectedActivity ?? {
+  const {
+    createActivity,
+    updateActivity,
+    loading,
+    loadActivity,
+    loadingInitial,
+  } = activityStore;
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [activity, setActivity] = useState<Activity>({
     id: "",
     title: "",
     category: "",
@@ -21,12 +29,23 @@ const ActivityForm: React.FC = () => {
     date: "",
     city: "",
     venue: "",
-  };
+  });
 
-  const [activity, setActivity] = useState(initialState);
+  useEffect(() => {
+    if (id) loadActivity(id).then((activity) => setActivity(activity!));
+  }, [id, loadActivity]);
 
   const handleSubmit = () => {
-    activity.id ? updateActivity(activity) : createActivity(activity);
+    if (!activity.id) {
+      activity.id = uuid();
+      createActivity(activity).then(() =>
+        navigate(`/activities/${activity.id}`)
+      );
+    } else {
+      updateActivity(activity).then(() =>
+        navigate(`/activities/${activity.id}`)
+      );
+    }
   };
 
   const handleInputChange = (
@@ -35,6 +54,8 @@ const ActivityForm: React.FC = () => {
     const { name, value } = event.target;
     setActivity({ ...activity, [name]: value });
   };
+
+  if (loadingInitial) return <LoadingComponent content="Loading..." />;
 
   return (
     <Segment clearing>
@@ -83,12 +104,7 @@ const ActivityForm: React.FC = () => {
           type="submit"
           content="Submit"
         />
-        <Button
-          onClick={() => closeForm()}
-          float="right"
-          type="button"
-          content="Cancel"
-        />
+        <Button float="right" type="button" content="Cancel" as={Link} to="/activities"/>
       </Form>
     </Segment>
   );
