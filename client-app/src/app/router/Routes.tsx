@@ -1,4 +1,5 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
+import React from 'react'
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import ActivityForm from "../../features/activities/form/ActivityForm";
@@ -15,7 +16,7 @@ export const routes: RouteObject[] = [
       { path: "manage/:id", element: <ActivityForm key="manage"/> }
       //   { path: "manage/:id", element: <ActivityForm key="manage" /> },
       //   { path: "profiles/:username", element: <ProfilePage /> },
-      //   { path: "errors", element: <TestErrors /> },
+      //   { path: "errors", element: <TestErrors /> },s
       //   { path: "not-found", element: <NotFound /> },
       //   { path: "server-error", element: <ServerError /> },
       //   { path: "*", element: <Navigate replace to="/not-found" /> },
